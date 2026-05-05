@@ -11,7 +11,7 @@
 [![Dataset](https://img.shields.io/badge/🤗-Dataset-yellow)](https://huggingface.co/datasets/claw-eval/Claw-Eval)
 [![License](https://img.shields.io/badge/license-MIT-orange)](LICENSE)
 
-> Claw-Eval: Toward Trustworthy Evaluation of Autonomous Agents. <br>
+> Claw-Eval: Towards Trustworthy Evaluation of Autonomous Agents. <br>
 > 300 human-verified tasks | 2,159 rubrics | 9 categories | Completion · Safety · Robustness.
 
 </div>
@@ -129,11 +129,14 @@ Our test cases are built on the work of the community. We draw from and adapt ta
 If you use Claw-Eval in your research, please cite:
 
 ```bibtex
-@article{ye2026claw,
-  title={Claw-Eval: Toward Trustworthy Evaluation of Autonomous Agents},
-  author={Ye, Bowen and Li, Rang and Yang, Qibin and Liu, Yuanxin and Yao, Linli and Lv, Hanglong and Xie, Zhihui and An, Chenxin and Li, Lei and Kong, Lingpeng and others},
-  journal={arXiv preprint arXiv:2604.06132},
-  year={2026}
+@misc{ye2026clawevaltrustworthyevaluationautonomous,
+      title={Claw-Eval: Towards Trustworthy Evaluation of Autonomous Agents}, 
+      author={Bowen Ye and Rang Li and Qibin Yang and Yuanxin Liu and Linli Yao and Hanglong Lv and Zhihui Xie and Chenxin An and Lei Li and Lingpeng Kong and Qi Liu and Zhifang Sui and Tong Yang},
+      year={2026},
+      eprint={2604.06132},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2604.06132}, 
 }
 ```
 
