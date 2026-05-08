@@ -73,18 +73,17 @@ tools:
       required: [message_id]
 
   - name: calendar_list_events
-    description: Get calendar events within a specified date range
+    description: List calendar events
     input_schema:
       type: object
       properties:
-        date:
+        start_date:
           type: string
-          description: "Query date (YYYY-MM-DD)"
-        days:
-          type: integer
-          description: "Number of days to query"
-          default: 1
-      required: [date]
+          description: "Start date (YYYY-MM-DD)"
+        end_date:
+          type: string
+          description: "End date (YYYY-MM-DD)"
+      required: []
 
   - name: calendar_get_event
     description: Get event details
