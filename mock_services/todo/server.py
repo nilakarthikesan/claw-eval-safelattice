@@ -13,7 +13,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 app = FastAPI(title="Mock Todo API")
 
@@ -52,6 +52,7 @@ def _log_call(endpoint: str, request_body: dict[str, Any], response_body: Any) -
 
 class ListTasksRequest(BaseModel):
     status: str = "all"
+    priority: str | None = None
 
 
 class UpdateTaskRequest(BaseModel):
@@ -60,6 +61,7 @@ class UpdateTaskRequest(BaseModel):
     priority: str | None = None
     status: str | None = None
     tags: list[str] | None = None
+    description: str | None = None
 
 
 class CreateTaskRequest(BaseModel):
@@ -67,6 +69,7 @@ class CreateTaskRequest(BaseModel):
     description: str | None = None
     priority: str = "medium"
     due_date: str | None = None
+    tags: list[str] = Field(default_factory=list)
 
 
 class DeleteTaskRequest(BaseModel):
@@ -84,6 +87,8 @@ def list_tasks(req: ListTasksRequest | None = None) -> dict[str, Any]:
     results = []
     for t in _tasks:
         if req.status == "all" or t["status"] == req.status:
+            if req.priority and t.get("priority") != req.priority:
+                continue
             results.append(copy.deepcopy(t))
     resp = {"tasks": results, "total": len(results)}
     _log_call("/todo/tasks", req.model_dump(), resp)
@@ -114,6 +119,8 @@ def update_task(req: UpdateTaskRequest) -> dict[str, Any]:
                 t["status"] = req.status
             if req.tags is not None:
                 t["tags"] = req.tags
+            if req.description is not None:
+                t["description"] = req.description
             updated = copy.deepcopy(t)
             _updated_tasks.append(updated)
             resp = {"status": "updated", "task": updated}
@@ -134,7 +141,7 @@ def create_task(req: CreateTaskRequest) -> dict[str, Any]:
         "status": "pending",
         "priority": req.priority,
         "due_date": req.due_date,
-        "tags": [],
+        "tags": req.tags,
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
     _tasks.append(task)

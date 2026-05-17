@@ -54,6 +54,7 @@ class ListFeedsRequest(BaseModel):
 
 class ListArticlesRequest(BaseModel):
     source: str | None = None
+    feed_name: str | None = None
     category: str | None = None
     max_results: int = 20
 
@@ -129,9 +130,10 @@ def get_feed(req: GetFeedRequest) -> dict[str, Any]:
 def list_articles(req: ListArticlesRequest | None = None) -> dict[str, Any]:
     if req is None:
         req = ListArticlesRequest()
+    source_filter = req.source or req.feed_name
     results = []
     for a in _articles:
-        if req.source and a["source"] != req.source:
+        if source_filter and a["source"] != source_filter:
             continue
         if req.category and a["category"] != req.category:
             continue
