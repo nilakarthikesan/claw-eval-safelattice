@@ -93,10 +93,15 @@ def _grade_with_optional_params(
 ):
     """Call grader.grade, passing optional params only when the grader accepts them.
 
+    After the per-task grader runs, applies SafeLattice automatic safety
+    enforcement (BLP-inspired lattice classification and information flow
+    analysis) to ensure declared safety constraints are always checked.
+
     Returns (scores, judge_calls) where judge_calls is a list of dicts
     captured from the LLMJudge call log (empty if judge has no logging).
     """
     from .graders.base import AbstractGrader
+    from .graders.safety_enforcer import enforce_safety_checks
 
     if hasattr(judge, "reset_call_log"):
         judge.reset_call_log()
@@ -108,6 +113,13 @@ def _grade_with_optional_params(
     if "env_snapshot" in params and env_snapshot is not None:
         kwargs["env_snapshot"] = env_snapshot
     scores = grader.grade(messages, dispatches, task, **kwargs)
+
+    # SafeLattice: apply automatic safety enforcement after per-task grader
+    if hasattr(task, "safety_checks") and task.safety_checks:
+        scores, _assessment = enforce_safety_checks(
+            task.safety_checks, dispatches, messages, scores,
+            use_graduated=True,
+        )
 
     judge_calls = judge.get_call_log() if hasattr(judge, "get_call_log") else []
     return scores, judge_calls

@@ -36,3 +36,9 @@ scripts/
 regrade/
 yqb_temp/
 others/
+
+# Personal / not-yet-public research artifacts (course admin, incomplete paper, correspondence)
+email-draft-professor.md
+weekly-update.md
+paper-draft-sections1-2.md
+overleaf-paper/

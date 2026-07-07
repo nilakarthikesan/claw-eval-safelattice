@@ -1,0 +1,16 @@
+# Test configuration - using affordable but capable models
+model:
+  api_key: ${OPENROUTER_API_KEY}
+  base_url: https://openrouter.ai/api/v1
+  model_id: google/gemini-2.5-flash
+  context_window: 1000000
+
+judge:
+  api_key: ${OPENROUTER_API_KEY}
+  base_url: https://openrouter.ai/api/v1
+  model_id: google/gemini-2.5-flash
+  enabled: true
+
+defaults:
+  trace_dir: traces
+  tasks_dir: tasks

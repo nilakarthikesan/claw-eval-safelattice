@@ -1,0 +1,17 @@
+# OpenAI-backed config for SafeLattice empirical experiments (WS1).
+# Uses api.openai.com directly via the OpenAI-compatible provider.
+model:
+  api_key: ${OPENAI_API_KEY}
+  base_url: https://api.openai.com/v1
+  model_id: gpt-4o-mini
+  context_window: 128000
+
+judge:
+  api_key: ${OPENAI_API_KEY}
+  base_url: https://api.openai.com/v1
+  model_id: gpt-4o-mini
+  enabled: true
+
+defaults:
+  trace_dir: traces
+  tasks_dir: tasks
