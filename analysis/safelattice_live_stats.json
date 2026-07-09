@@ -1,207 +1,215 @@
 {
   "n_models": 6,
-  "n_tasks": 20,
-  "n_traces": 120,
+  "n_tasks": 50,
+  "n_traces": 1222,
   "per_model": {
     "anthropic/claude-haiku-4-5": {
-      "n_traces": 20,
-      "n_tasks": 20,
+      "n_traces": 198,
+      "n_tasks": 45,
       "completion": {
-        "mean": 0.531,
-        "ci_lo": 0.3808,
-        "ci_hi": 0.6799,
-        "n": 20
+        "mean": 0.6373,
+        "ci_lo": 0.5896,
+        "ci_hi": 0.6888,
+        "n": 198
       },
       "binary_task_score": {
-        "mean": 0.6048,
-        "ci_lo": 0.467,
-        "ci_hi": 0.7399,
-        "n": 20
+        "mean": 0.6883,
+        "ci_lo": 0.6444,
+        "ci_hi": 0.7349,
+        "n": 198
       },
       "safelattice_task_score": {
-        "mean": 0.6048,
-        "ci_lo": 0.467,
-        "ci_hi": 0.7399,
-        "n": 20
+        "mean": 0.6622,
+        "ci_lo": 0.6173,
+        "ci_hi": 0.7096,
+        "n": 198
       },
-      "trial_variance_safelattice": 0.097034,
+      "trial_variance_safelattice": 0.106266,
       "pass_hat_k": {
-        "k": 1,
-        "value": 0.4
+        "k": 3,
+        "value": 0.5292
       },
       "pass_at_k": {
-        "k": 1,
-        "value": 0.4
+        "k": 3,
+        "value": 0.6222
       },
       "safelattice_severity_distribution": {
-        "medium": 1
+        "medium": 15,
+        "high": 10,
+        "critical": 3
       }
     },
     "anthropic/claude-sonnet-4-6": {
-      "n_traces": 20,
-      "n_tasks": 20,
+      "n_traces": 194,
+      "n_tasks": 44,
       "completion": {
-        "mean": 0.5966,
-        "ci_lo": 0.4531,
-        "ci_hi": 0.7413,
-        "n": 20
+        "mean": 0.7252,
+        "ci_lo": 0.6839,
+        "ci_hi": 0.7686,
+        "n": 194
       },
       "binary_task_score": {
-        "mean": 0.6773,
-        "ci_lo": 0.5625,
-        "ci_hi": 0.7931,
-        "n": 20
+        "mean": 0.7725,
+        "ci_lo": 0.7377,
+        "ci_hi": 0.8089,
+        "n": 194
       },
       "safelattice_task_score": {
-        "mean": 0.6773,
-        "ci_lo": 0.5625,
-        "ci_hi": 0.7931,
-        "n": 20
+        "mean": 0.7463,
+        "ci_lo": 0.7073,
+        "ci_hi": 0.7841,
+        "n": 194
       },
-      "trial_variance_safelattice": 0.07191,
+      "trial_variance_safelattice": 0.076539,
       "pass_hat_k": {
-        "k": 1,
-        "value": 0.45
+        "k": 3,
+        "value": 0.5983
       },
       "pass_at_k": {
-        "k": 1,
-        "value": 0.45
+        "k": 3,
+        "value": 0.7227
       },
-      "safelattice_severity_distribution": {}
+      "safelattice_severity_distribution": {
+        "medium": 10,
+        "critical": 3
+      }
     },
     "google/gemini-2.5-flash": {
-      "n_traces": 20,
-      "n_tasks": 20,
+      "n_traces": 210,
+      "n_tasks": 49,
       "completion": {
-        "mean": 0.2418,
-        "ci_lo": 0.1547,
-        "ci_hi": 0.3333,
-        "n": 20
+        "mean": 0.2784,
+        "ci_lo": 0.2444,
+        "ci_hi": 0.3144,
+        "n": 210
       },
       "binary_task_score": {
-        "mean": 0.3935,
-        "ci_lo": 0.3238,
-        "ci_hi": 0.4666,
-        "n": 20
+        "mean": 0.4218,
+        "ci_lo": 0.3943,
+        "ci_hi": 0.4511,
+        "n": 210
       },
       "safelattice_task_score": {
-        "mean": 0.3935,
-        "ci_lo": 0.3238,
-        "ci_hi": 0.4666,
-        "n": 20
+        "mean": 0.4218,
+        "ci_lo": 0.3943,
+        "ci_hi": 0.4511,
+        "n": 210
       },
-      "trial_variance_safelattice": 0.027619,
+      "trial_variance_safelattice": 0.042067,
       "pass_hat_k": {
-        "k": 1,
-        "value": 0.0
+        "k": 3,
+        "value": 0.0682
       },
       "pass_at_k": {
-        "k": 1,
-        "value": 0.0
+        "k": 3,
+        "value": 0.1143
       },
       "safelattice_severity_distribution": {}
     },
     "meta-llama/llama-3.3-70b-instruct": {
-      "n_traces": 20,
-      "n_tasks": 20,
+      "n_traces": 207,
+      "n_tasks": 49,
       "completion": {
-        "mean": 0.2605,
-        "ci_lo": 0.146,
-        "ci_hi": 0.3897,
-        "n": 20
+        "mean": 0.2775,
+        "ci_lo": 0.2434,
+        "ci_hi": 0.3173,
+        "n": 207
       },
       "binary_task_score": {
-        "mean": 0.3501,
-        "ci_lo": 0.2394,
-        "ci_hi": 0.4734,
-        "n": 20
+        "mean": 0.3631,
+        "ci_lo": 0.3267,
+        "ci_hi": 0.4039,
+        "n": 207
       },
       "safelattice_task_score": {
-        "mean": 0.3491,
-        "ci_lo": 0.2369,
-        "ci_hi": 0.4734,
-        "n": 20
+        "mean": 0.3623,
+        "ci_lo": 0.3262,
+        "ci_hi": 0.4027,
+        "n": 207
       },
-      "trial_variance_safelattice": 0.082211,
+      "trial_variance_safelattice": 0.075194,
       "pass_hat_k": {
-        "k": 1,
-        "value": 0.15
+        "k": 3,
+        "value": 0.0448
       },
       "pass_at_k": {
-        "k": 1,
-        "value": 0.15
+        "k": 3,
+        "value": 0.0816
       },
       "safelattice_severity_distribution": {
-        "medium": 2,
-        "high": 1
+        "medium": 20,
+        "high": 13
       }
     },
     "openai/gpt-4o": {
-      "n_traces": 20,
-      "n_tasks": 20,
+      "n_traces": 209,
+      "n_tasks": 50,
       "completion": {
-        "mean": 0.4686,
-        "ci_lo": 0.3457,
-        "ci_hi": 0.5971,
-        "n": 20
+        "mean": 0.4838,
+        "ci_lo": 0.4469,
+        "ci_hi": 0.5213,
+        "n": 209
       },
       "binary_task_score": {
-        "mean": 0.5549,
-        "ci_lo": 0.439,
-        "ci_hi": 0.674,
-        "n": 20
+        "mean": 0.5755,
+        "ci_lo": 0.5434,
+        "ci_hi": 0.609,
+        "n": 209
       },
       "safelattice_task_score": {
-        "mean": 0.5549,
-        "ci_lo": 0.439,
-        "ci_hi": 0.674,
-        "n": 20
+        "mean": 0.5584,
+        "ci_lo": 0.5252,
+        "ci_hi": 0.5918,
+        "n": 209
       },
-      "trial_variance_safelattice": 0.076242,
+      "trial_variance_safelattice": 0.057377,
       "pass_hat_k": {
-        "k": 1,
-        "value": 0.25
+        "k": 3,
+        "value": 0.1505
       },
       "pass_at_k": {
-        "k": 1,
-        "value": 0.25
+        "k": 3,
+        "value": 0.303
       },
       "safelattice_severity_distribution": {
-        "medium": 2
+        "medium": 20,
+        "critical": 2
       }
     },
     "openai/gpt-4o-mini": {
-      "n_traces": 20,
-      "n_tasks": 20,
+      "n_traces": 204,
+      "n_tasks": 48,
       "completion": {
-        "mean": 0.4466,
-        "ci_lo": 0.3336,
-        "ci_hi": 0.5643,
-        "n": 20
+        "mean": 0.4321,
+        "ci_lo": 0.3955,
+        "ci_hi": 0.4736,
+        "n": 204
       },
       "binary_task_score": {
-        "mean": 0.5473,
-        "ci_lo": 0.4506,
-        "ci_hi": 0.646,
-        "n": 20
+        "mean": 0.5176,
+        "ci_lo": 0.4815,
+        "ci_hi": 0.5566,
+        "n": 204
       },
       "safelattice_task_score": {
-        "mean": 0.5473,
-        "ci_lo": 0.4506,
-        "ci_hi": 0.646,
-        "n": 20
+        "mean": 0.5022,
+        "ci_lo": 0.4659,
+        "ci_hi": 0.5404,
+        "n": 204
       },
-      "trial_variance_safelattice": 0.055945,
+      "trial_variance_safelattice": 0.070518,
       "pass_hat_k": {
-        "k": 1,
-        "value": 0.1
+        "k": 3,
+        "value": 0.1311
       },
       "pass_at_k": {
-        "k": 1,
-        "value": 0.1
+        "k": 3,
+        "value": 0.25
       },
       "safelattice_severity_distribution": {
-        "medium": 1
+        "high": 12,
+        "medium": 15,
+        "critical": 3
       }
     }
   },
@@ -211,8 +219,8 @@
       "anthropic/claude-haiku-4-5",
       "openai/gpt-4o",
       "openai/gpt-4o-mini",
-      "meta-llama/llama-3.3-70b-instruct",
-      "google/gemini-2.5-flash"
+      "google/gemini-2.5-flash",
+      "meta-llama/llama-3.3-70b-instruct"
     ],
     "by_binary": [
       "anthropic/claude-sonnet-4-6",
@@ -232,10 +240,10 @@
     ]
   },
   "concordance": {
-    "kendalls_w_completion_binary_safelattice": 0.9746,
+    "kendalls_w_completion_binary_safelattice": 1.0,
     "kendalls_w_binary_vs_safelattice": 1.0,
-    "kendalls_w_completion_vs_safelattice": 0.9714,
+    "kendalls_w_completion_vs_safelattice": 1.0,
     "kendalls_tau_binary_vs_safelattice": 1.0,
-    "kendalls_tau_completion_vs_safelattice": 0.8667
+    "kendalls_tau_completion_vs_safelattice": 1.0
   }
 }

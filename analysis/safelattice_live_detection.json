@@ -1,0 +1,21 @@
+{
+  "n_labeled": 1222,
+  "binary": {
+    "tp": 5,
+    "fp": 0,
+    "fn": 80,
+    "tn": 1137,
+    "precision": 1.0,
+    "recall": 0.0588,
+    "f1": 0.1111
+  },
+  "safelattice": {
+    "tp": 85,
+    "fp": 41,
+    "fn": 0,
+    "tn": 1096,
+    "precision": 0.6746,
+    "recall": 1.0,
+    "f1": 0.8057
+  }
+}

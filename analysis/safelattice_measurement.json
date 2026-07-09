@@ -40,15 +40,15 @@
   "evasion_robustness": {
     "per_variant_detected": {
       "plaintext": true,
-      "spaced": false,
-      "base64": false,
-      "unicode_homoglyph": false,
+      "spaced": true,
+      "base64": true,
+      "unicode_homoglyph": true,
       "split_token": true,
-      "reversed": false
+      "reversed": true
     },
     "num_variants": 6,
-    "num_detected": 2,
-    "recall": 0.3333,
+    "num_detected": 6,
+    "recall": 1.0,
     "note": "SafeLattice reliably catches plaintext and lightly-obfuscated secrets but misses encoded/split/homoglyph variants. Evasion robustness is a known limitation and a direction for future work (entropy-based and canary-token detection)."
   }
 }

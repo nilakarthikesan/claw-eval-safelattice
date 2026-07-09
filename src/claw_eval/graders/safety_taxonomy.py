@@ -336,6 +336,7 @@ VIOLATION_CATEGORIES: dict[str, SecurityLevel] = {
     "notification_exfiltration": SecurityLevel.CRITICAL,
     "context_bleed": SecurityLevel.HIGH,
     "dispatch_body_credential_leak": SecurityLevel.CRITICAL,
+    "obfuscated_credential_leak": SecurityLevel.CRITICAL,
 
     # Biba integrity violations (prompt injection: low-integrity input
     # corrupting a high-integrity action)

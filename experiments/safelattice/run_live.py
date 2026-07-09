@@ -142,9 +142,52 @@ def preflight(models: list[str], config: str) -> int:
 
 # ── sweep ──
 
+# Port gap between adjacent worker slots. Tasks use ports 9100-9129 (span 30);
+# matches the stride used by `claw_eval.cli batch`.
+_PORT_STRIDE = 50
+
+
+def _run_one(model: str, tdir: Path, config: str, out_dir: Path,
+             no_judge: bool, port_offset: int) -> dict[str, Any]:
+    """Run a single (model, task, trial) via the CLI; return a manifest entry."""
+    cmd = [
+        sys.executable, "-m", "claw_eval.cli", "run",
+        "--task", str(tdir),
+        "--config", config,
+        "--model", model,
+        "--trials", "1",
+        "--trace-dir", str(out_dir),
+        "--port-offset", str(port_offset),
+    ]
+    if no_judge:
+        cmd.append("--no-judge")
+    proc = subprocess.run(cmd, capture_output=True, text=True)
+    entry: dict[str, Any] = {}
+    if proc.returncode != 0:
+        entry["status"] = "error"
+        entry["error"] = proc.stderr[-400:]
+    else:
+        trace = _completed_trace(out_dir)
+        if trace is None:
+            entry["status"] = "no_trace"
+        else:
+            entry["status"] = "ok"
+            entry["trace_path"] = str(trace.relative_to(REPO_ROOT))
+    return entry
+
+
 def sweep(models: list[str], task_ids: list[str], config: str, trials: int,
-          trace_root: Path, no_judge: bool) -> dict[str, Any]:
-    """Run the (model x task x trial) matrix; resumable. Returns run manifest."""
+          trace_root: Path, no_judge: bool, workers: int = 1) -> dict[str, Any]:
+    """Run the (model x task x trial) matrix; resumable. Returns run manifest.
+
+    With ``workers > 1``, jobs run concurrently; each worker slot gets a unique
+    service-port offset so mock services never collide. Jobs are interleaved
+    across models (task-major order) so no single provider is hammered by all
+    workers at once.
+    """
+    import threading
+    from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
+
     trace_root.mkdir(parents=True, exist_ok=True)
     manifest_path = trace_root / "run_manifest.json"
     manifest: list[dict[str, Any]] = []
@@ -155,17 +198,18 @@ def sweep(models: list[str], task_ids: list[str], config: str, trials: int,
             manifest = []
     # Index existing manifest entries for dedup.
     seen = {(m["model"], m["task_id"], m["trial"]) for m in manifest}
+    lock = threading.Lock()
 
-    total = len(models) * len(task_ids) * trials
-    done = 0
-    for model in models:
-        for tid in task_ids:
-            tdir = _task_dir(tid)
-            if tdir is None:
-                print(f"[skip] task not found: {tid}", file=sys.stderr)
-                continue
-            for trial in range(1, trials + 1):
-                done += 1
+    # Build the pending job list up front (task-major: interleaves models).
+    jobs: list[tuple[str, str, Path, int]] = []
+    skipped = 0
+    for tid in task_ids:
+        tdir = _task_dir(tid)
+        if tdir is None:
+            print(f"[skip] task not found: {tid}", file=sys.stderr)
+            continue
+        for trial in range(1, trials + 1):
+            for model in models:
                 out_dir = _trial_dir(trace_root, model, tid, trial)
                 existing = _completed_trace(out_dir)
                 if existing is not None:
@@ -176,39 +220,59 @@ def sweep(models: list[str], task_ids: list[str], config: str, trials: int,
                             "status": "resumed",
                         })
                         seen.add((model, tid, trial))
-                    print(f"[{done}/{total}] skip (done): {model} :: {tid} trial {trial}")
+                    skipped += 1
                     continue
-                out_dir.mkdir(parents=True, exist_ok=True)
-                cmd = [
-                    sys.executable, "-m", "claw_eval.cli", "run",
-                    "--task", str(tdir),
-                    "--config", config,
-                    "--model", model,
-                    "--trials", "1",
-                    "--trace-dir", str(out_dir),
-                ]
-                if no_judge:
-                    cmd.append("--no-judge")
-                print(f"[{done}/{total}] run: {model} :: {tid} trial {trial}")
-                proc = subprocess.run(cmd, capture_output=True, text=True)
-                entry: dict[str, Any] = {
-                    "model": model, "task_id": tid, "trial": trial,
-                }
-                if proc.returncode != 0:
-                    entry["status"] = "error"
-                    entry["error"] = proc.stderr[-400:]
-                    print(f"    [error] {proc.stderr.strip()[-200:]}", file=sys.stderr)
-                else:
-                    trace = _completed_trace(out_dir)
-                    if trace is None:
-                        entry["status"] = "no_trace"
-                    else:
-                        entry["status"] = "ok"
-                        entry["trace_path"] = str(trace.relative_to(REPO_ROOT))
-                manifest.append(entry)
-                seen.add((model, tid, trial))
-                # Persist after every run so the sweep is crash-safe.
-                manifest_path.write_text(json.dumps(manifest, indent=2))
+                if (model, tid, trial) in seen:
+                    # Manifest says error/no_trace but no finished trace exists:
+                    # drop the stale entry so the job is retried.
+                    manifest = [m for m in manifest
+                                if (m["model"], m["task_id"], m["trial"]) != (model, tid, trial)]
+                    seen.discard((model, tid, trial))
+                jobs.append((model, tid, tdir, trial))
+    manifest_path.write_text(json.dumps(manifest, indent=2))
+    total = len(jobs) + skipped
+    done = skipped
+    if skipped:
+        print(f"[resume] {skipped}/{total} runs already complete; {len(jobs)} to go.")
+
+    def _execute(job: tuple[str, str, Path, int], slot: int) -> None:
+        nonlocal done
+        model, tid, tdir, trial = job
+        out_dir = _trial_dir(trace_root, model, tid, trial)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        with lock:
+            done += 1
+            print(f"[{done}/{total}] run: {model} :: {tid} trial {trial} (slot {slot})")
+        entry = {"model": model, "task_id": tid, "trial": trial}
+        entry.update(_run_one(model, tdir, config, out_dir, no_judge,
+                              port_offset=slot * _PORT_STRIDE))
+        with lock:
+            if entry["status"] == "error":
+                print(f"    [error] {model} :: {tid}: "
+                      f"{(entry.get('error') or '').strip()[-160:]}", file=sys.stderr)
+            manifest.append(entry)
+            seen.add((model, tid, trial))
+            # Persist after every run so the sweep is crash-safe.
+            manifest_path.write_text(json.dumps(manifest, indent=2))
+
+    if workers <= 1:
+        for job in jobs:
+            _execute(job, slot=0)
+    else:
+        slots = list(range(workers))
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            pending: dict = {}
+            queue = list(jobs)
+            while queue or pending:
+                while queue and slots:
+                    slot = slots.pop(0)
+                    fut = pool.submit(_execute, queue.pop(0), slot)
+                    pending[fut] = slot
+                if pending:
+                    finished, _ = wait(list(pending), return_when=FIRST_COMPLETED)
+                    for fut in finished:
+                        slots.append(pending.pop(fut))
+                        fut.result()  # propagate unexpected exceptions
 
     manifest_path.write_text(json.dumps(manifest, indent=2))
     ok = sum(1 for m in manifest if m.get("status") in ("ok", "resumed"))
@@ -403,6 +467,8 @@ def main() -> None:
     p_sw.add_argument("--trials", type=int, default=5)
     p_sw.add_argument("--trace-root", default="traces_live")
     p_sw.add_argument("--judge", action="store_true", help="Enable LLM judge (default off, cheaper)")
+    p_sw.add_argument("--workers", type=int, default=1,
+                      help="Concurrent runs (each worker gets its own service-port range)")
     p_sw.add_argument("--yes", action="store_true", help="Skip cost-estimate confirmation")
 
     p_sc = sub.add_parser("score", help="Score captured traces (regrades ungraded traces via judge)")
@@ -439,7 +505,8 @@ def main() -> None:
             print("Aborted.")
             return
     sweep(models, task_ids, args.config, args.trials,
-          REPO_ROOT / args.trace_root, no_judge=not args.judge)
+          REPO_ROOT / args.trace_root, no_judge=not args.judge,
+          workers=max(1, args.workers))
     print("Now score with: python -m experiments.safelattice.run_live score "
           f"--trace-root {args.trace_root}")
 

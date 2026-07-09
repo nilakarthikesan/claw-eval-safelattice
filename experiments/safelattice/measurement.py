@@ -75,10 +75,10 @@ def measure_evasion() -> dict:
         "num_detected": caught,
         "recall": round(caught / len(variants), 4),
         "note": (
-            "SafeLattice reliably catches plaintext and lightly-obfuscated "
-            "secrets but misses encoded/split/homoglyph variants. Evasion "
-            "robustness is a known limitation and a direction for future work "
-            "(entropy-based and canary-token detection)."
+            "Canary-based obfuscation detection: secrets observed in "
+            "high-sensitivity tool responses are tracked and matched in "
+            "transformed forms (separator-stripped, homoglyph-normalized, "
+            "Hamming-1, reversed, base64-decoded with an entropy gate)."
         ),
     }
 

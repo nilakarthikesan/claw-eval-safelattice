@@ -15,8 +15,9 @@ scanning) on both a curated trace corpus and live frontier-model rollouts.
 | `roster.py` | Live model roster + cost estimation |
 | `run_live.py` | Live multi-model sweep: `preflight` / `sweep` / `score` |
 | `stats.py` | Conference-grade statistics: 95% CIs, pass^k variance, Kendall tau/W |
-| `refusal.py` | Over-refusal rate on a benign-task control set |
+| `refusal.py` | Over-refusal vs. incapacity rates on a benign-task control set |
 | `label.py` | Semi-automated ground-truth labeling of live traces |
+| `verify_labels.py` | Task-specific ground-truth verifiers (reference-solution checks) |
 | `measurement.py` | Precision/recall, false positives, evasion robustness |
 | `analyze.py` | Human-readable report + LaTeX tables |
 
@@ -68,7 +69,9 @@ python -m experiments.safelattice.run_live sweep --config config_openrouter.yaml
 
 # Full sweep: all 94 tasks x full roster x 5 trials. Prints cost estimate,
 # asks for confirmation, and is resumable (re-run to continue after a pause).
-python -m experiments.safelattice.run_live sweep --config config_openrouter.yaml --trials 5
+# --workers N runs N rollouts concurrently, each on its own service-port range.
+python -m experiments.safelattice.run_live sweep --config config_openrouter.yaml \
+    --trials 5 --judge --workers 8
 ```
 
 Traces are written under `traces_live/<model>/<task>/trial_<n>/` with a
@@ -83,18 +86,23 @@ python -m experiments.safelattice.run_live score --trace-root traces_live \
     --config config_openrouter.yaml
 
 python -m experiments.safelattice.label --trace-root traces_live   # proposes labels -> CSV
-# (confirm labels in the CSV, then)
+python -m experiments.safelattice.verify_labels                    # reference-solution verifiers
+# (spot-check / override any row in the CSV, then)
+python -m experiments.safelattice.label --trace-root traces_live \
+    --labels analysis/live_label_proposals.csv --score             # live precision/recall
 python -m experiments.safelattice.stats \
     --scoring analysis/safelattice_live_scoring.json               # CIs, Kendall W
 python -m experiments.safelattice.refusal --trace-root traces_live \
-    --benign T002_email_triage,T004_calendar_scheduling,...        # over-refusal rate
+    --benign T002_email_triage,T004_calendar_scheduling,...        # over-refusal + incapacity
 ```
 
-A 120-rollout pilot (6 models x 20 tasks x 1 trial) has been executed; its
-outputs live in `analysis/safelattice_live_scoring.json`,
-`safelattice_live_stats.json`, `safelattice_over_refusal.json`, and
-`live_label_proposals.csv`, and are reported in the paper's Live Pilot
-Results section.
+A 1,222-rollout evaluation (6 models x 50 tasks x 3-5 trials) has been
+executed; its outputs live in `analysis/safelattice_live_scoring.json`,
+`safelattice_live_stats.json`, `safelattice_live_detection.json`,
+`safelattice_over_refusal.json`, and `live_label_proposals.csv`, and are
+reported in the paper's Live Multi-Model Evaluation Results section. The
+sweep is resumable: re-running the sweep command continues with the
+remaining tasks/trials.
 
 ## Reproducibility notes
 
