@@ -1,0 +1,24 @@
+# OpenRouter-backed config for SafeLattice live multi-model experiments.
+#
+# OpenRouter exposes an OpenAI-compatible endpoint, so the existing
+# OpenAICompatProvider works unchanged -- only base_url + model_id differ.
+# Set your key first:   export OPENROUTER_API_KEY=sk-or-...
+#
+# The `model.model_id` below is only the default for a single `run`; the
+# live sweep (experiments/safelattice/run_live.py) overrides it per model
+# via --models. The judge stays on a cheap, capable model.
+model:
+  api_key: ${OPENROUTER_API_KEY}
+  base_url: https://openrouter.ai/api/v1
+  model_id: openai/gpt-4o-mini
+  context_window: 128000
+
+judge:
+  api_key: ${OPENROUTER_API_KEY}
+  base_url: https://openrouter.ai/api/v1
+  model_id: openai/gpt-4o-mini
+  enabled: true
+
+defaults:
+  trace_dir: traces_live
+  tasks_dir: tasks

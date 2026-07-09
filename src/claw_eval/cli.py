@@ -557,6 +557,23 @@ def cmd_run(args: argparse.Namespace) -> None:
             task_score = compute_task_score(scores)
             passed = is_pass(task_score)
             trial_scores_local.append(task_score)
+            user_agent_meta = {}
+            if end and end.user_agent_rounds > 0:
+                user_agent_meta = {
+                    "rounds_used": end.user_agent_rounds,
+                    "max_rounds": end.user_agent_max_rounds,
+                    "done_reached": end.user_agent_done,
+                }
+            _append_grading_to_trace(
+                trace_path,
+                trace_id=start.trace_id,
+                task_id=task.task_id,
+                scores=scores,
+                task_score=task_score,
+                passed=passed,
+                judge_calls=judge_calls,
+                user_agent_meta=user_agent_meta,
+            )
             totals = _trace_totals(end)
 
             print(f"  completion:     {scores.completion:.2f}")

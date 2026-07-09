@@ -1,0 +1,241 @@
+{
+  "n_models": 6,
+  "n_tasks": 20,
+  "n_traces": 120,
+  "per_model": {
+    "anthropic/claude-haiku-4-5": {
+      "n_traces": 20,
+      "n_tasks": 20,
+      "completion": {
+        "mean": 0.531,
+        "ci_lo": 0.3808,
+        "ci_hi": 0.6799,
+        "n": 20
+      },
+      "binary_task_score": {
+        "mean": 0.6048,
+        "ci_lo": 0.467,
+        "ci_hi": 0.7399,
+        "n": 20
+      },
+      "safelattice_task_score": {
+        "mean": 0.6048,
+        "ci_lo": 0.467,
+        "ci_hi": 0.7399,
+        "n": 20
+      },
+      "trial_variance_safelattice": 0.097034,
+      "pass_hat_k": {
+        "k": 1,
+        "value": 0.4
+      },
+      "pass_at_k": {
+        "k": 1,
+        "value": 0.4
+      },
+      "safelattice_severity_distribution": {
+        "medium": 1
+      }
+    },
+    "anthropic/claude-sonnet-4-6": {
+      "n_traces": 20,
+      "n_tasks": 20,
+      "completion": {
+        "mean": 0.5966,
+        "ci_lo": 0.4531,
+        "ci_hi": 0.7413,
+        "n": 20
+      },
+      "binary_task_score": {
+        "mean": 0.6773,
+        "ci_lo": 0.5625,
+        "ci_hi": 0.7931,
+        "n": 20
+      },
+      "safelattice_task_score": {
+        "mean": 0.6773,
+        "ci_lo": 0.5625,
+        "ci_hi": 0.7931,
+        "n": 20
+      },
+      "trial_variance_safelattice": 0.07191,
+      "pass_hat_k": {
+        "k": 1,
+        "value": 0.45
+      },
+      "pass_at_k": {
+        "k": 1,
+        "value": 0.45
+      },
+      "safelattice_severity_distribution": {}
+    },
+    "google/gemini-2.5-flash": {
+      "n_traces": 20,
+      "n_tasks": 20,
+      "completion": {
+        "mean": 0.2418,
+        "ci_lo": 0.1547,
+        "ci_hi": 0.3333,
+        "n": 20
+      },
+      "binary_task_score": {
+        "mean": 0.3935,
+        "ci_lo": 0.3238,
+        "ci_hi": 0.4666,
+        "n": 20
+      },
+      "safelattice_task_score": {
+        "mean": 0.3935,
+        "ci_lo": 0.3238,
+        "ci_hi": 0.4666,
+        "n": 20
+      },
+      "trial_variance_safelattice": 0.027619,
+      "pass_hat_k": {
+        "k": 1,
+        "value": 0.0
+      },
+      "pass_at_k": {
+        "k": 1,
+        "value": 0.0
+      },
+      "safelattice_severity_distribution": {}
+    },
+    "meta-llama/llama-3.3-70b-instruct": {
+      "n_traces": 20,
+      "n_tasks": 20,
+      "completion": {
+        "mean": 0.2605,
+        "ci_lo": 0.146,
+        "ci_hi": 0.3897,
+        "n": 20
+      },
+      "binary_task_score": {
+        "mean": 0.3501,
+        "ci_lo": 0.2394,
+        "ci_hi": 0.4734,
+        "n": 20
+      },
+      "safelattice_task_score": {
+        "mean": 0.3491,
+        "ci_lo": 0.2369,
+        "ci_hi": 0.4734,
+        "n": 20
+      },
+      "trial_variance_safelattice": 0.082211,
+      "pass_hat_k": {
+        "k": 1,
+        "value": 0.15
+      },
+      "pass_at_k": {
+        "k": 1,
+        "value": 0.15
+      },
+      "safelattice_severity_distribution": {
+        "medium": 2,
+        "high": 1
+      }
+    },
+    "openai/gpt-4o": {
+      "n_traces": 20,
+      "n_tasks": 20,
+      "completion": {
+        "mean": 0.4686,
+        "ci_lo": 0.3457,
+        "ci_hi": 0.5971,
+        "n": 20
+      },
+      "binary_task_score": {
+        "mean": 0.5549,
+        "ci_lo": 0.439,
+        "ci_hi": 0.674,
+        "n": 20
+      },
+      "safelattice_task_score": {
+        "mean": 0.5549,
+        "ci_lo": 0.439,
+        "ci_hi": 0.674,
+        "n": 20
+      },
+      "trial_variance_safelattice": 0.076242,
+      "pass_hat_k": {
+        "k": 1,
+        "value": 0.25
+      },
+      "pass_at_k": {
+        "k": 1,
+        "value": 0.25
+      },
+      "safelattice_severity_distribution": {
+        "medium": 2
+      }
+    },
+    "openai/gpt-4o-mini": {
+      "n_traces": 20,
+      "n_tasks": 20,
+      "completion": {
+        "mean": 0.4466,
+        "ci_lo": 0.3336,
+        "ci_hi": 0.5643,
+        "n": 20
+      },
+      "binary_task_score": {
+        "mean": 0.5473,
+        "ci_lo": 0.4506,
+        "ci_hi": 0.646,
+        "n": 20
+      },
+      "safelattice_task_score": {
+        "mean": 0.5473,
+        "ci_lo": 0.4506,
+        "ci_hi": 0.646,
+        "n": 20
+      },
+      "trial_variance_safelattice": 0.055945,
+      "pass_hat_k": {
+        "k": 1,
+        "value": 0.1
+      },
+      "pass_at_k": {
+        "k": 1,
+        "value": 0.1
+      },
+      "safelattice_severity_distribution": {
+        "medium": 1
+      }
+    }
+  },
+  "rankings": {
+    "by_completion": [
+      "anthropic/claude-sonnet-4-6",
+      "anthropic/claude-haiku-4-5",
+      "openai/gpt-4o",
+      "openai/gpt-4o-mini",
+      "meta-llama/llama-3.3-70b-instruct",
+      "google/gemini-2.5-flash"
+    ],
+    "by_binary": [
+      "anthropic/claude-sonnet-4-6",
+      "anthropic/claude-haiku-4-5",
+      "openai/gpt-4o",
+      "openai/gpt-4o-mini",
+      "google/gemini-2.5-flash",
+      "meta-llama/llama-3.3-70b-instruct"
+    ],
+    "by_safelattice": [
+      "anthropic/claude-sonnet-4-6",
+      "anthropic/claude-haiku-4-5",
+      "openai/gpt-4o",
+      "openai/gpt-4o-mini",
+      "google/gemini-2.5-flash",
+      "meta-llama/llama-3.3-70b-instruct"
+    ]
+  },
+  "concordance": {
+    "kendalls_w_completion_binary_safelattice": 0.9746,
+    "kendalls_w_binary_vs_safelattice": 1.0,
+    "kendalls_w_completion_vs_safelattice": 0.9714,
+    "kendalls_tau_binary_vs_safelattice": 1.0,
+    "kendalls_tau_completion_vs_safelattice": 0.8667
+  }
+}
