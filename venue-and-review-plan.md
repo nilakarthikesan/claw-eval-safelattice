@@ -1,9 +1,10 @@
 # SafeLattice: External Review Ask + Venue Shortlist
 
-Prepared for discussion with my advisor. Two decisions needed: (1) who gives
-us a second technical read, and (2) which venue/deadline we target, since that
-determines whether we submit with the current results or wait for the full
-five-trial sweep.
+Prepared for discussion with my advisor. Venue is now decided — **ACM DTRAP**
+(see Section 2). The remaining open item is (1) who gives us a second technical
+read before we finalize the submission. Because DTRAP is a journal with no
+fixed deadline, we can submit on the current results or wait for the full
+five-trial sweep without missing a window.
 
 ## 1. Second-reader ask
 
@@ -25,23 +26,86 @@ whoever teaches the formal-models material from CS 6238) for a 30-minute read
 of Sections IV-V plus the threats-to-validity subsection, before we freeze the
 submission.
 
-## 2. Venue shortlist (deadlines verified July 9, 2026)
+## 2. Primary target: ACM DTRAP (Digital Threats: Research and Practice)
 
-| Venue | Deadline | Type | Fit |
-|---|---|---|---|
-| ACM AISec 2026 (at CCS) | **Jul 24, 2026** (firm) | Archival workshop | Strong: AI+security intersection is exactly the topic; but 2 weeks out |
-| NeurIPS 2026 workshops (e.g. SEA: Scaling Environments for Agents) | ~Aug 29, 2026 | Non-archival workshop | Good for feedback; non-archival keeps the work submittable elsewhere |
-| IEEE SaTML 2027 | **Sep 29, 2026** | Full conference | Best fit: trustworthy ML, verification of algorithms/systems, formal rigor valued; ~12 weeks out |
+**Decision made:** the primary target is **ACM DTRAP**
+(https://dl.acm.org/journal/dtrap), a journal, not a conference. This changes
+the constraint from *deadline* to *rubric fit and quality* — there is no fixed
+submission date, so we submit when the manuscript is ready.
 
-**Recommendation.** Target **SaTML 2027 (Sep 29)** as the primary venue: the
-paper's identity (formal security models applied to ML evaluation) matches its
-CFP better than any general ML venue, and the timeline allows (a) the full
-five-trial live sweep with human-confirmed labels, (b) the second-reader pass
-on the formal sections, and (c) a revision cycle. Optionally submit a
-condensed version to a **NeurIPS non-archival workshop (Aug 29)** for early
-community feedback at no archival cost. AISec's July 24 deadline is feasible
-only if we are comfortable submitting with pilot-scale live results; the
-scaled sweep now running weakens that argument for rushing.
+Why DTRAP fits:
+
+- **Extant threats, not laboratory models.** DTRAP explicitly scopes to
+  scientifically rigorous work on *real* digital threats. Our paper now leads
+  with the OpenClaw CVE chain (ClawJacked, Claw Chain) and the 11 live
+  frontier-model credential leaks scored "safe" by the deployed benchmark —
+  extant, weaponized threats, exactly the venue's remit.
+- **Research–practice bridge.** DTRAP wants work that connects research and
+  practice; the tinman-eval / Claw-Eval deployment framing and the graduated
+  practitioner tooling argument speak directly to this.
+- **Reproducibility.** The trace corpus, dual-scoring harness, live-run
+  harness, 119 tests, and released JSON artifacts match DTRAP's
+  reproducibility expectations.
+- **Advisor precedent.** The advisor's group has an active DTRAP submission
+  (DTRAP-2026-0102, "Theia"), which we used as the structural and formatting
+  model — de-risks format acceptance.
+
+Manuscript is ready in `overleaf-paper-dtrap/` (acmart, double-anonymous,
+26 pages — within DTRAP's ~30-page soft cap). The prior IEEE version remains
+untouched in `overleaf-paper/` if a conference fallback is ever needed.
+
+### DTRAP conversion status (done)
+
+- Converted to `acmart` `\documentclass[manuscript,screen,review,anonymous]`
+  with `\acmJournal{DTRAP}` and `\setcopyright{none}`, mirroring the Theia
+  package.
+- Ported all sections, tables, theorems/proofs (dropped the IEEEtran `\proof`
+  workaround; acmart's `amsthm` handles it natively).
+- Added ACM front matter: CCS concepts (logic and verification, information
+  flow control, intelligent agents, security requirements) + keywords.
+- Bibliography moved to `references.bib` + `ACM-Reference-Format`; all 53
+  cited keys resolve, no bibtex errors.
+- Anonymized for double-anonymous review: author block is "Anonymous
+  Author(s)"; the repository is referred to as "anonymized ... available to
+  reviewers"; the CAPRI-DP self-citation is anonymized in the reference list.
+- Added a **"Use of LLMs"** subsection (agents-under-test, LLM-judge in
+  grading, and explicit statement that no LLM touches the safety detectors or
+  ground truth) and a **Theia-style ground-truth audit table** (Table:
+  1,222 rollouts labeled, 3 detectors, 6 mechanical verifiers, 69 confirmed /
+  111 overturned, 85 verified violations).
+- Reframed abstract + intro to open on extant threats and the deployed-gate
+  detection gap.
+- Compiles locally with `tectonic` (`cd overleaf-paper-dtrap && tectonic
+  main.tex`) → `main.pdf`, 26 pages.
+
+### ScholarOne submission steps (advisor / author only — cannot be automated)
+
+Submission is via ScholarOne Manuscripts (mc.manuscriptcentral.com/dtrap):
+
+1. **Create/confirm ScholarOne account** for the corresponding author and add
+   an **ORCID** iD (DTRAP requests it).
+2. **Start a new submission**, manuscript type **Research Article** (not Field
+   Note / Tool / Editorial).
+3. **Upload the anonymized PDF** built from `overleaf-paper-dtrap/` and select
+   the double-anonymous option; confirm no author-identifying content (we have
+   scrubbed the manuscript, but ScholarOne also asks for a title-page/author
+   step kept separate from the blind PDF).
+4. **Abstract + keywords + ACM CCS concepts** — paste from the manuscript.
+5. **Suggested/opposed reviewers** — advisor to nominate 2–3 suggested
+   reviewers (formal-security or agent-safety background) per journal norms.
+6. **Cover letter** — one paragraph on extant-threat fit and the
+   research–practice contribution; advisor to approve.
+7. **Author agreement / conflicts / funding** disclosures as prompted.
+8. Keep a **non-anonymous camera-ready** branch ready: at acceptance, switch
+   `\documentclass` to the ACM production option, restore the real author
+   block and repository URL, and complete the ACM rights (eRights) form
+   (`\setcopyright` / `\acmDOI` filled from the rights email).
+
+### Second-reader ask (unchanged, still valuable pre-submission)
+
+See Section 1 — a 30-minute formal-sections read from a systems-security
+colleague remains the highest-value pre-submission review, and there is no
+deadline pressure forcing us to skip it.
 
 ## 3. What must be frozen before submission (status)
 
