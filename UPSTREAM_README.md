@@ -37,7 +37,7 @@ We sincerely thank the teams behind [Meta (Muse Spark)](https://x.com/alexandr_w
 
 To run Claw-Eval and submit results to join the leaderboard, contact: **bwye@stu.pku.edu.cn**, **lirang410@gmail.com**, **nlp.lilei@gmail.com**.
 
-## 📢 Updates
+## Updates
 * **v1.1.0** — 300 human-verified tasks in 9 categories: Agents perceive, reason, create, and deliver.
 
 * **v1.0.0** — Built on reproducible real-world complexity.
@@ -119,7 +119,7 @@ We welcome any kind of contribution. Let us know if you have any suggestions!
 Our test cases are built on the work of the community. We draw from and adapt tasks contributed by OpenClaw, PinchBench, OfficeQA, OneMillion-Bench, Finance Agent, and Terminal-Bench 2.0.
 
 ## Core Contributors
-[Bowen Ye](https://github.com/pkuYmiracle)(PKU), [Rang Li](https://github.com/lirang04) (PKU), [Qibin Yang](https://github.com/yangqibin-caibi) (PKU), [Zhihui Xie](https://zhxie.site/)(HKU), [Yuanxin Liu](https://llyx97.github.io/)(PKU), [Linli Yao](https://yaolinli.github.io/)(PKU), [Hanglong Lyu](https://github.com/Albus2002)(PKU), [Lei Li](lilei-nlp.github.io)(HKU, project lead)
+[Bowen Ye](https://github.com/pkuYmiracle)(PKU), [Rang Li](https://github.com/lirang04) (PKU), [Qibin Yang](https://github.com/yangqibin-caibi) (PKU), [Zhihui Xie](https://zhxie.site/)(HKU), [Yuanxin Liu](https://llyx97.github.io/)(PKU), [Linli Yao](https://yaolinli.github.io/)(PKU), [Hanglong Lyu](https://github.com/Albus2002)(PKU), [Lei Li](https://lilei-nlp.github.io/)(HKU, project lead)
 
 
 ## Advisors

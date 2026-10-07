@@ -33,15 +33,12 @@ python -m experiments.safelattice.analyze          # -> report + LaTeX tables
 
 ## Live multi-model evaluation (requires OpenRouter key)
 
-The live runs are the paper's centerpiece: real frontier models on the safety
-subset, scored under both systems, with multiple trials for confidence
-intervals. Everything is built; the only prerequisite is a funded API key.
+The live runner evaluates configured models on a safety-relevant subset and scores each trace under both systems. API access, provider compatibility, mock services, and judge configuration must be available before a sweep.
 
 ### 1. Get an OpenRouter key
 
 1. Create an account at <https://openrouter.ai>.
-2. Add credits (the default 6-model x 94-task x 5-trial sweep is estimated at
-   roughly $45; see the cost estimate printed before every sweep).
+2. Review the runner's estimate and add provider credits. Final charges depend on provider prices and actual token usage.
 3. Generate an API key and export it:
 
 ```bash
@@ -80,7 +77,7 @@ crash-safe `run_manifest.json` updated after every run.
 ### 4. Score, label, and analyze
 
 ```bash
-# Grades any un-graded trace with the production graders + LLM judge
+# Grades ungraded traces with the configured task graders and LLM judge
 # (appends a grading_result event, so re-scoring is free), then dual-scores.
 python -m experiments.safelattice.run_live score --trace-root traces_live \
     --config config_openrouter.yaml
